@@ -1,0 +1,10 @@
+- name: Get UERANSIM source code from git and checkout to master
+  ansible.builtin.git:
+    repo: 'https://github.com/aligungr/UERANSIM'
+    dest: /home/{{ user }}/UERANSIM
+    version: v3.2.4
+
+- name: Run make on UERANSIM
+  ansible.builtin.command: make
+  args:
+    chdir: /home/{{ user }}/UERANSIM

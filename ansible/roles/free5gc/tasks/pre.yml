@@ -1,0 +1,117 @@
+- name: Update packages
+  ansible.builtin.command: apt update -y
+  become: yes
+
+- name: Variables that are common across all OS types
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - common.yml
+      paths:
+        - 'vars'
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - default.yml
+      paths:
+        - 'vars'
+
+- name: Install compile packages for Free5gc
+  ansible.builtin.package:
+    name: "{{ common_compile_packages }}"
+    state: present
+  become: yes
+
+- name: Install compile packages for Free5gc
+  ansible.builtin.package:
+    name: "{{ free5gc_compile_packages }}"
+    state: present
+  become: yes
+
+- name: Install compile packages for Free5gc
+  ansible.builtin.package:
+    name: "{{ user_plane_compile_packages }}"
+    state: present
+  become: yes
+
+- name: Remove currently installed golang. This assumes your current version of Go is in the default location
+  ansible.builtin.command: rm -rf /usr/local/go
+  become: yes
+
+- name: Create directory for go
+  ansible.builtin.file:
+    path: ~/go
+    state: directory
+
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  ansible.builtin.unarchive:
+    src: https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+  when: ansible_architecture == "x86_64"
+  become: yes
+
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  ansible.builtin.unarchive:
+    src: https://dl.google.com/go/go1.14.4.linux-arm64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+  when: ansible_architecture == "aarch64"
+  become: yes
+
+- name: Create a bin directory if it does not exist
+  ansible.builtin.file:
+    path: ~/go/bin
+    state: directory
+
+- name: Create a pkg directory if it does not exist
+  ansible.builtin.file:
+    path: ~/go/pkg
+    state: directory
+
+- name: Create a src directory if it does not exist
+  ansible.builtin.file:
+    path: ~/go/src
+    state: directory
+
+- name: Set the PYTHONPATH environment variable to for automation scripts
+  ansible.builtin.lineinfile:
+    path: ~/.profile
+    regexp: '^export GOPATH'
+    line: 'export GOPATH=$HOME/go'
+
+- name: Set the PYTHONPATH environment variable to for automation scripts
+  ansible.builtin.lineinfile:
+    path: ~/.profile
+    regexp: '^export GOROOT'
+    line: 'export GOROOT=/usr/local/go'
+
+- name: Set the PYTHONPATH environment variable to for automation scripts
+  ansible.builtin.lineinfile:
+    path: ~/.profile
+    regexp: '^export PATH=$PATH:$GOPATH/bin:$GOROOT/bin'
+    line: 'export PATH=$PATH:$GOPATH/bin:$GOROOT/bin'
+
+- name: Set the PYTHONPATH environment variable to for automation scripts
+  ansible.builtin.lineinfile:
+    path: ~/.profile
+    regexp: '^export GO111MODULE'
+    line: 'export GO111MODULE=auto'
+  
+- name: Get go version
+  ansible.builtin.shell: go version
+  register: func_result
+  environment: 
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: '{{ ansible_user_dir }}/go'
+
+- name: check result
+  debug:
+    var: func_result.stdout
+
+

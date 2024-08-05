@@ -1,0 +1,4 @@
+{'time': '09:11:26', 'pid': 90217, 'comm': 'python3', 'count': 14, 'time (ms)': 0.434908}
+{'time': '09:11:26', 'pid': 90068, 'comm': '[unknown]', 'count': 5, 'time (ms)': 0.051078}
+{'time': '09:11:26', 'pid': 90142, 'comm': '[unknown]', 'count': 2, 'time (ms)': 0.050959}
+{'time': '09:11:26', 'pid': 683, 'comm': 'dbus-daemon', 'count': 1, 'time (ms)': 0.0149}

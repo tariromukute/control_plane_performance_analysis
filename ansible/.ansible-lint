@@ -1,0 +1,4 @@
+skip_list:
+- no-changed-when
+- experimental  # all rules tagged as experimental
+- no-handler  # Tasks that run when changed should likely be handlers

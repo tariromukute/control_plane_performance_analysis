@@ -1,0 +1,8 @@
+{'time': '14:48:28', 'pid': 459, 'comm': 'multipathd', 'count': 13, 'time (ms)': 65001.377922}
+{'time': '14:48:28', 'pid': 717, 'comm': 'mysqld', 'count': 31, 'time (ms)': 9259.657655}
+{'time': '14:48:28', 'pid': 62702, 'comm': '[unknown]', 'count': 2, 'time (ms)': 703.341486}
+{'time': '14:48:28', 'pid': 62707, 'comm': '[unknown]', 'count': 35, 'time (ms)': 533.606292}
+{'time': '14:48:28', 'pid': 608, 'comm': 'systemd-logind', 'count': 6, 'time (ms)': 3.069326}
+{'time': '14:48:28', 'pid': 62532, 'comm': '[unknown]', 'count': 4, 'time (ms)': 2.518883}
+{'time': '14:48:28', 'pid': 1, 'comm': 'systemd', 'count': 1, 'time (ms)': 0.196817}
+{'time': '14:48:28', 'pid': 547, 'comm': 'systemd-resolve', 'count': 2, 'time (ms)': 0.011246}

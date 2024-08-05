@@ -1,0 +1,35 @@
+[04:32:43]
+t:syscalls:sys_enter_socket():char*,int,int:$COMM,args->protocol,args->family&00004000
+	COUNT      EVENT
+	1          $COMM = b'sshd', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'(udm)', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'(nrf)', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'sshd', args->protocol = 9, args->family&00004000 = 0
+	1          $COMM = b'(udr)', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'smf', args->protocol = 6, args->family&00004000 = 0
+	1          $COMM = b'systemctl', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'(smf)', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'nrf', args->protocol = 6, args->family&00004000 = 0
+	1          $COMM = b'(ausf)', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'systemd-network', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'systemd-udevd', args->protocol = 0, args->family&00004000 = 0
+	1          $COMM = b'python3', args->protocol = 0, args->family&00004000 = 0
+	2          $COMM = b'sftp-server', args->protocol = 0, args->family&00004000 = 0
+	2          $COMM = b'smf', args->protocol = 17, args->family&00004000 = 0
+	2          $COMM = b'udm', args->protocol = 6, args->family&00004000 = 0
+	2          $COMM = b'sh', args->protocol = 0, args->family&00004000 = 0
+	4          $COMM = b'nrf', args->protocol = 0, args->family&00004000 = 0
+	4          $COMM = b'sudo', args->protocol = 9, args->family&00004000 = 0
+	5          $COMM = b'systemd', args->protocol = 0, args->family&00004000 = 0
+	6          $COMM = b'systemd-udevd', args->protocol = 15, args->family&00004000 = 0
+	6          $COMM = b'udm', args->protocol = 0, args->family&00004000 = 0
+	8          $COMM = b'ausf', args->protocol = 6, args->family&00004000 = 0
+	9          $COMM = b'udr', args->protocol = 6, args->family&00004000 = 0
+	10         $COMM = b'smf', args->protocol = 0, args->family&00004000 = 0
+	10         $COMM = b'apport', args->protocol = 0, args->family&00004000 = 0
+	12         $COMM = b'ausf', args->protocol = 0, args->family&00004000 = 0
+	13         $COMM = b'sudo', args->protocol = 0, args->family&00004000 = 0
+	14         $COMM = b'udr', args->protocol = 0, args->family&00004000 = 0
+	14         $COMM = b'sd-resolve', args->protocol = 0, args->family&00004000 = 0
+	15         $COMM = b'systemd-timesyn', args->protocol = 0, args->family&00004000 = 0
+	30         $COMM = b'systemd-resolve', args->protocol = 0, args->family&00004000 = 0

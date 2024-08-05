@@ -1,0 +1,5 @@
+{'time': '22:05:35', 'pid': 88134, 'comm': 'python3', 'count': 1, 'time (ms)': 70052.517176}
+{'time': '22:05:35', 'pid': 88128, 'comm': 'python3', 'count': 13, 'time (ms)': 65015.286399}
+{'time': '22:05:35', 'pid': 85885, 'comm': 'snapd', 'count': 220, 'time (ms)': 448.426335}
+{'time': '22:05:35', 'pid': 88076, 'comm': 'sshd', 'count': 86, 'time (ms)': 90.656151}
+{'time': '22:05:35', 'pid': 88147, 'comm': '[unknown]', 'count': 26, 'time (ms)': 10.193894}

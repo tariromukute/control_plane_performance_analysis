@@ -1,0 +1,5 @@
+[04:11:41]
+r::do_epoll_wait(int epfd, struct epoll_event __user *events,int maxevents, int timeout):char*,int,int:$COMM,$entry(maxevents),$retval
+	COUNT      EVENT
+	69         $COMM = b'xpl_accept-1', maxevents = 32, $retval = 0
+	69         $COMM = b'python3', maxevents = 2, $retval = 0

@@ -1,0 +1,4 @@
+{'time': '13:39:47', 'pid': 459, 'comm': 'multipathd', 'count': 13, 'time (ms)': 65002.452469}
+{'time': '13:39:47', 'pid': 693, 'comm': 'systemd-logind', 'count': 7, 'time (ms)': 4.096327}
+{'time': '13:39:47', 'pid': 35806, 'comm': '[unknown]', 'count': 4, 'time (ms)': 2.27287}
+{'time': '13:39:47', 'pid': 1, 'comm': 'systemd', 'count': 1, 'time (ms)': 1.222361}

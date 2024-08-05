@@ -1,0 +1,5 @@
+[05:06:34]
+t:syscalls:sys_exit_sendmmsg():char*,long:$COMM,args->ret
+	COUNT      EVENT
+	1          $COMM = b'sudo', args->ret = 2
+	28         $COMM = b'sd-resolve', args->ret = 2

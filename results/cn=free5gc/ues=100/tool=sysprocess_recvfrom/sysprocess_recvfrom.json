@@ -1,0 +1,2 @@
+{'time': '07:45:44', 'pid': 80782, 'comm': '[unknown]', 'count': 4, 'time (ms)': 0.009398}
+{'time': '07:45:44', 'pid': 60466, 'comm': 'snapd', 'count': 2, 'time (ms)': 0.006079}

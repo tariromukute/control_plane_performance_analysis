@@ -1,0 +1,6 @@
+[04:37:59]
+t:syscalls:sys_enter_accept4():char*,int,int:$COMM,args->fd,args->flags&00004000
+	COUNT      EVENT
+	1          $COMM = b'dbus-daemon', args->fd = 3, args->flags&00004000 = 0
+	1          $COMM = b'systemd', args->fd = 19, args->flags&00004000 = 2048
+	6          $COMM = b'systemd-journal', args->fd = 4, args->flags&00004000 = 2048

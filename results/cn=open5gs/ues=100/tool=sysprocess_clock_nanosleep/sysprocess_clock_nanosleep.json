@@ -1,0 +1,5 @@
+{'time': '15:51:15', 'pid': 13249, 'comm': 'mongod', 'count': 715, 'time (ms)': 137967.42455}
+{'time': '15:51:15', 'pid': 459, 'comm': 'multipathd', 'count': 69, 'time (ms)': 69012.582178}
+{'time': '15:51:15', 'pid': 63751, 'comm': 'open5gs-pcrfd', 'count': 1, 'time (ms)': 60000.180756}
+{'time': '15:51:15', 'pid': 63752, 'comm': 'open5gs-smfd', 'count': 1, 'time (ms)': 60000.143505}
+{'time': '15:51:15', 'pid': 63770, 'comm': 'open5gs-hssd', 'count': 1, 'time (ms)': 60000.114789}

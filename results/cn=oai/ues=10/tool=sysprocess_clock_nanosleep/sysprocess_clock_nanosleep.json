@@ -1,0 +1,7 @@
+{'time': '16:09:46', 'pid': 717, 'comm': 'mysqld', 'count': 69, 'time (ms)': 69009.729445}
+{'time': '16:09:46', 'pid': 459, 'comm': 'multipathd', 'count': 69, 'time (ms)': 69006.074323}
+{'time': '16:09:46', 'pid': 72061, 'comm': 'nrf', 'count': 4, 'time (ms)': 200.545638}
+{'time': '16:09:46', 'pid': 72082, 'comm': 'smf', 'count': 5, 'time (ms)': 14.329936}
+{'time': '16:09:46', 'pid': 72040, 'comm': '[unknown]', 'count': 1, 'time (ms)': 0.090563}
+{'time': '16:09:46', 'pid': 72052, 'comm': '[unknown]', 'count': 1, 'time (ms)': 0.081758}
+{'time': '16:09:46', 'pid': 72048, 'comm': '[unknown]', 'count': 1, 'time (ms)': 0.066901}

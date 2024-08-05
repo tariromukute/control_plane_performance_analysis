@@ -1,0 +1,17 @@
+{'time': '18:56:53', 'pid': 86642, 'comm': 'open5gs-scpd', 'count': 2680, 'time (ms)': 44.081558}
+{'time': '18:56:53', 'pid': 86644, 'comm': 'open5gs-nrfd', 'count': 1314, 'time (ms)': 15.493285}
+{'time': '18:56:53', 'pid': 86643, 'comm': 'open5gs-ausfd', 'count': 1225, 'time (ms)': 12.526651}
+{'time': '18:56:53', 'pid': 86634, 'comm': 'open5gs-amfd', 'count': 635, 'time (ms)': 7.746389}
+{'time': '18:56:53', 'pid': 86673, 'comm': 'open5gs-smfd', 'count': 31, 'time (ms)': 1.050836}
+{'time': '18:56:53', 'pid': 86649, 'comm': 'open5gs-pcfd', 'count': 20, 'time (ms)': 0.654965}
+{'time': '18:56:53', 'pid': 86648, 'comm': 'open5gs-udrd', 'count': 14, 'time (ms)': 0.60237}
+{'time': '18:56:53', 'pid': 86647, 'comm': 'open5gs-bsfd', 'count': 16, 'time (ms)': 0.550207}
+{'time': '18:56:53', 'pid': 86603, 'comm': 'python3', 'count': 14, 'time (ms)': 0.54398}
+{'time': '18:56:53', 'pid': 86641, 'comm': 'open5gs-sgwcd', 'count': 15, 'time (ms)': 0.515894}
+{'time': '18:56:53', 'pid': 86645, 'comm': 'open5gs-sgwud', 'count': 15, 'time (ms)': 0.45305}
+{'time': '18:56:53', 'pid': 86650, 'comm': 'open5gs-udmd', 'count': 18, 'time (ms)': 0.406599}
+{'time': '18:56:53', 'pid': 86635, 'comm': 'open5gs-upfd', 'count': 12, 'time (ms)': 0.403836}
+{'time': '18:56:53', 'pid': 86646, 'comm': 'open5gs-nssfd', 'count': 16, 'time (ms)': 0.358123}
+{'time': '18:56:53', 'pid': 86433, 'comm': '[unknown]', 'count': 5, 'time (ms)': 0.050926}
+{'time': '18:56:53', 'pid': 86506, 'comm': '[unknown]', 'count': 2, 'time (ms)': 0.04245}
+{'time': '18:56:53', 'pid': 681, 'comm': 'dbus-daemon', 'count': 1, 'time (ms)': 0.011223}

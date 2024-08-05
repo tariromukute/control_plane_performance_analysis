@@ -1,0 +1,11 @@
+{'time': '16:15:02', 'pid': 583, 'comm': 'accounts-daemon', 'count': 103, 'time (ms)': 69292.228471}
+{'time': '16:15:02', 'pid': 599, 'comm': 'rsyslogd', 'count': 304, 'time (ms)': 67545.187565}
+{'time': '16:15:02', 'pid': 459, 'comm': 'multipathd', 'count': 2, 'time (ms)': 60000.130146}
+{'time': '16:15:02', 'pid': 593, 'comm': 'irqbalance', 'count': 6, 'time (ms)': 59998.460517}
+{'time': '16:15:02', 'pid': 72718, 'comm': 'udm', 'count': 63, 'time (ms)': 106.239037}
+{'time': '16:15:02', 'pid': 72719, 'comm': 'ausf', 'count': 68, 'time (ms)': 65.050638}
+{'time': '16:15:02', 'pid': 72538, 'comm': 'sshd', 'count': 6, 'time (ms)': 63.805979}
+{'time': '16:15:02', 'pid': 72735, 'comm': 'smf', 'count': 31, 'time (ms)': 63.79445}
+{'time': '16:15:02', 'pid': 72734, 'comm': 'udr', 'count': 63, 'time (ms)': 53.607673}
+{'time': '16:15:02', 'pid': 1, 'comm': 'systemd', 'count': 10, 'time (ms)': 0.036569}
+{'time': '16:15:02', 'pid': 72707, 'comm': 'sudo', 'count': 7, 'time (ms)': 0.020981}

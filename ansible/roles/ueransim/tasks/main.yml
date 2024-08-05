@@ -1,0 +1,10 @@
+---
+# tasks file for ueransim
+- name: Run pre tasks for EURAMSIM
+  include: pre.yml
+
+- name: Install and setup EURAMSIM
+  include: setup.yml
+
+- name: Configure UERANSIM with Free5GC VM
+  include: configure.yml

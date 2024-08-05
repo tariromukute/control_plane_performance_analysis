@@ -1,0 +1,101 @@
+# Set up the config files (Optionally copy from files/)
+- name: check result
+  debug:
+    var: "{{ eth1_ip }}"
+
+- name: Copy free5gc-gnb file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/free5gc-gnb.yaml"
+    dest: /home/{{ user }}/UERANSIM/config/
+
+- name: Copy open5gs-gnb file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/open5gs-gnb.yaml"
+    dest: /home/{{ user }}/UERANSIM/config/
+
+- name: "change __NGAP_IP__ in ~/UERANSIM/config/free5gc-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/free5gc-gnb.yaml
+    regexp: '__NGAP_IP__'
+    replace: '{{ eth1_ip }}'
+    backup: yes
+  become: yes
+
+- name: "change __NGAP_IP__ in ~/UERANSIM/config/open5gs-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/open5gs-gnb.yaml
+    regexp: '__NGAP_IP__'
+    replace: '{{ eth1_ip }}'
+    backup: yes
+  become: yes
+
+- name: "change __GTP_IP__ ~/UERANSIM/config/free5gc-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/free5gc-gnb.yaml
+    regexp: '__GTP_IP__'
+    replace: '{{ eth1_ip }}'
+    backup: yes
+  become: yes
+
+- name: "change __GTP_IP__ ~/UERANSIM/config/open5gs-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/open5gs-gnb.yaml
+    regexp: '__GTP_IP__'
+    replace: '{{ eth1_ip }}'
+    backup: yes
+  become: yes
+
+- name: "change __AMF_IP__ ~/UERANSIM/config/free5gc-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/free5gc-gnb.yaml
+    regexp: '__AMF_IP__'
+    replace: '{{ eth1_gw }}'
+    backup: yes
+  become: yes
+
+- name: "change __AMF_IP__ ~/UERANSIM/config/open5gs-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/open5gs-gnb.yaml
+    regexp: '__AMF_IP__'
+    replace: '{{ eth1_gw }}'
+    backup: yes
+  become: yes
+
+# Update the oai-cn5g
+- name: Copy free5gc-gnb file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/oai-cn5g-gnb.yaml"
+    dest: /home/{{ user }}/UERANSIM/config/
+
+- name: "change __GTP_IP__ ~/UERANSIM/config/oai-cn5g-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/oai-cn5g-gnb.yaml
+    regexp: '__GTP_IP__'
+    replace: '{{ eth1_ip }}'
+    backup: yes
+  become: yes
+
+- name: "change __NGAP_IP__ ~/UERANSIM/config/oai-cn5g-gnb.yaml"
+  become_user: root
+  replace: 
+    path: /home/{{ user }}/UERANSIM/config/oai-cn5g-gnb.yaml
+    regexp: '__NGAP_IP__'
+    replace: '{{ eth1_ip }}'
+    backup: yes
+  become: yes
+
+- name: Copy oai-cn5g-ue file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/oai-cn5g-ue.yaml"
+    dest: /home/{{ user }}/UERANSIM/config/
+
+- name: configure static route to DUT
+  ansible.builtin.command: ip route add 48.0.0.0/16 via {{ eth1_gw }}
+  become: yes

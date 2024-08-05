@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance
+    # TODO: build prebuilt ansible images (use this one for now)
+    # wget https://golang.org/dl/go1.14.4.linux-arm64.tar.gz
+    image: ${MOLECULE_DISTRO:-geerlingguy/docker-ubuntu2004-ansible:latest}
+    pre_build_image: true
+    capabilities:
+      - NET_ADMIN
+      - NET_RAW
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+scenario:
+  name: default
+  test_sequence: 
+    - destroy
+    - create
+    - converge
+    # - idempotence # TODO: enable idempotence
+    - lint
+    - verify

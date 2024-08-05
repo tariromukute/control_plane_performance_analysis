@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include open5gs"
+      include_role:
+        name: "open5gs"
+      vars:
+        user: ubuntu

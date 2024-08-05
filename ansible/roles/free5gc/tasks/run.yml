@@ -1,0 +1,22 @@
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/dump"
+    dest: '{{ ansible_user_dir }}/free5gc/dump'
+  become: yes
+
+- name: Run mongorestore
+  ansible.builtin.command: mongorestore
+  args:
+    chdir: '{{ ansible_user_dir }}/free5gc/dump'
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/free5gc.service"
+    dest: /lib/systemd/system/
+  become: yes
+
+- name: Start service free5gc, if not started
+  ansible.builtin.service:
+    name: free5gc
+    state: started
+  become: yes

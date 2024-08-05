@@ -1,0 +1,43 @@
+# Set up the config files (Optionally copy from files/)
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/amfcfg.yaml"
+    dest: "{{ ansible_user_dir }}/free5gc/config/"
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/smfcfg.yaml"
+    dest: "{{ ansible_user_dir }}/free5gc/config/"
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/upfcfg.yaml"
+    dest: "{{ ansible_user_dir }}/free5gc/config/"
+
+- name: "change ~/free5gc/config/amfcfg.yaml"
+  become_user: root
+  replace: 
+    path: "{{ ansible_user_dir }}/free5gc/config/amfcfg.yaml"
+    regexp: '__NGAP_IP_LIST__'
+    replace: '{{ ansible_default_ipv4.address }}'
+    backup: yes
+  become: yes
+
+- name: "change ~/free5gc/config/smfcfg.yaml"
+  become_user: root
+  replace: 
+    path: "{{ ansible_user_dir }}/free5gc/config/smfcfg.yaml"
+    regexp: '__N3_IP__'
+    replace: '{{ ansible_default_ipv4.address }}'
+    backup: yes
+  become: yes
+
+- name: "change ~/free5gc/config/upfcfg.yaml"
+  become_user: root
+  replace: 
+    path: "{{ ansible_user_dir }}/free5gc/config/upfcfg.yaml"
+    regexp: '__N3_IP_LIST__'
+    replace: '{{ ansible_default_ipv4.address }}'
+    backup: yes
+  become: yes

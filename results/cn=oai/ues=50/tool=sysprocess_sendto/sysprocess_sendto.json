@@ -1,0 +1,15 @@
+{'time': '22:26:39', 'pid': 92028, 'comm': 'udm', 'count': 1764, 'time (ms)': 19.927719}
+{'time': '22:26:39', 'pid': 92054, 'comm': 'amf', 'count': 1061, 'time (ms)': 14.729657}
+{'time': '22:26:39', 'pid': 92030, 'comm': 'ausf', 'count': 964, 'time (ms)': 10.356662}
+{'time': '22:26:39', 'pid': 92056, 'comm': 'udr', 'count': 65, 'time (ms)': 1.279283}
+{'time': '22:26:39', 'pid': 92045, 'comm': 'smf', 'count': 23, 'time (ms)': 0.590961}
+{'time': '22:26:39', 'pid': 91992, 'comm': 'python3', 'count': 14, 'time (ms)': 0.489901}
+{'time': '22:26:39', 'pid': 91060, 'comm': '[unknown]', 'count': 9, 'time (ms)': 0.163441}
+{'time': '22:26:39', 'pid': 92017, 'comm': '[unknown]', 'count': 12, 'time (ms)': 0.130754}
+{'time': '22:26:39', 'pid': 1, 'comm': 'systemd', 'count': 12, 'time (ms)': 0.090348}
+{'time': '22:26:39', 'pid': 91852, 'comm': '[unknown]', 'count': 7, 'time (ms)': 0.084856}
+{'time': '22:26:39', 'pid': 91940, 'comm': '[unknown]', 'count': 2, 'time (ms)': 0.043697}
+{'time': '22:26:39', 'pid': 547, 'comm': 'systemd-resolve', 'count': 2, 'time (ms)': 0.030734}
+{'time': '22:26:39', 'pid': 717, 'comm': 'mysqld', 'count': 1, 'time (ms)': 0.01711}
+{'time': '22:26:39', 'pid': 587, 'comm': 'dbus-daemon', 'count': 1, 'time (ms)': 0.012741}
+{'time': '22:26:39', 'pid': 92024, 'comm': 'nrf', 'count': 1, 'time (ms)': 0.01184}

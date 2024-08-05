@@ -1,0 +1,18 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+    type: libvirt
+    options:
+      memory: 192
+      cpus: 1
+platforms:
+  - name: instance
+    box: generic/ubuntu2004
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

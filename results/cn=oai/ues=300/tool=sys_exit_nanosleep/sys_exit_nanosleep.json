@@ -1,0 +1,4 @@
+[04:16:56]
+t:syscalls:sys_exit_nanosleep():char*,u16:$COMM,args->ret
+	COUNT      EVENT
+	635        $COMM = b'snapd', args->ret = 0

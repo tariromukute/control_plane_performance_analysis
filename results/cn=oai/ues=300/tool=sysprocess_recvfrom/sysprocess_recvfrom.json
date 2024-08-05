@@ -1,0 +1,11 @@
+{'time': '03:23:00', 'pid': 85902, 'comm': 'systemd-timesyn', 'count': 70, 'time (ms)': 2.045047}
+{'time': '03:23:00', 'pid': 85885, 'comm': 'snapd', 'count': 442, 'time (ms)': 0.998229}
+{'time': '03:23:00', 'pid': 203700, 'comm': 'udr', 'count': 26, 'time (ms)': 0.447791}
+{'time': '03:23:00', 'pid': 547, 'comm': 'systemd-resolve', 'count': 114, 'time (ms)': 0.432043}
+{'time': '03:23:00', 'pid': 203699, 'comm': 'smf', 'count': 23, 'time (ms)': 0.142936}
+{'time': '03:23:00', 'pid': 203685, 'comm': 'udm', 'count': 25, 'time (ms)': 0.138029}
+{'time': '03:23:00', 'pid': 1, 'comm': 'systemd', 'count': 20, 'time (ms)': 0.073956}
+{'time': '03:23:00', 'pid': 203675, 'comm': 'sudo', 'count': 10, 'time (ms)': 0.015961}
+{'time': '03:23:00', 'pid': 545, 'comm': 'systemd-network', 'count': 1, 'time (ms)': 0.013686}
+{'time': '03:23:00', 'pid': 717, 'comm': 'mysqld', 'count': 3, 'time (ms)': 0.006282}
+{'time': '03:23:00', 'pid': 203505, 'comm': 'sshd', 'count': 2, 'time (ms)': 0.004788}

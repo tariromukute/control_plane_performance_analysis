@@ -1,0 +1,20 @@
+free5gc_compile_packages:
+  - mongodb
+  - wget
+  - iptables
+user_plane_compile_packages:
+  - gcc
+  - g++
+  - cmake
+  - autoconf
+  - libtool
+  - pkg-config
+  - libmnl-dev
+  - libyaml-dev
+old_webconsole_complie_packages:
+  - cmdtest
+  - yarn
+new_webconsole_complie_packages:
+  - yarn
+  - nodejs
+sudo: sudo

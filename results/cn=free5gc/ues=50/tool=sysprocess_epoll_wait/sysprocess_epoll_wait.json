@@ -1,0 +1,8 @@
+{'time': '06:48:22', 'pid': 72820, 'comm': 'python3', 'count': 68, 'time (ms)': 68072.748485}
+{'time': '06:48:22', 'pid': 43813, 'comm': 'systemd-journal', 'count': 32, 'time (ms)': 65319.185467}
+{'time': '06:48:22', 'pid': 43784, 'comm': 'systemd-network', 'count': 17, 'time (ms)': 63742.616188}
+{'time': '06:48:22', 'pid': 1, 'comm': 'systemd', 'count': 10, 'time (ms)': 26008.058217}
+{'time': '06:48:22', 'pid': 695, 'comm': 'systemd-logind', 'count': 4, 'time (ms)': 10000.139392}
+{'time': '06:48:22', 'pid': 54380, 'comm': 'systemd-udevd', 'count': 15, 'time (ms)': 4002.031942}
+{'time': '06:48:22', 'pid': 72827, 'comm': '[unknown]', 'count': 1, 'time (ms)': 3973.351341}
+{'time': '06:48:22', 'pid': 683, 'comm': 'dbus-daemon', 'count': 23, 'time (ms)': 4.24895}

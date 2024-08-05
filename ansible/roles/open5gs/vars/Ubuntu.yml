@@ -1,0 +1,5 @@
+installation_packages:
+  - software-properties-common 
+webui_complie_packages:
+  - nodejs
+open5gs: open5gs

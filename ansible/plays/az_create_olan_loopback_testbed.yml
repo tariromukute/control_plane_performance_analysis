@@ -1,0 +1,363 @@
+- name: Create Azure VM
+  hosts: localhost
+  connection: local
+
+  vars:
+    resource_group: opengilan
+    address_prefix: "10.0.0.0/16"
+    vnet_name: olanVnet
+    olan_prefix: olan
+    olan_username: azureuser
+    # ssh_key_data: ""
+
+  tasks:
+  - fail: msg="Bailing out. this play requires 'ssh_key_data'. To get the ssh key_data run cat ~/.ssh/id_rsa.pub"
+    when: ssh_key_data is undefined
+  
+  - name: Show ssh key
+    debug:
+      msg: "{{ ssh_key_data }}"
+
+  - name: Create resource group
+    azure_rm_resourcegroup:
+      name: "{{ resource_group }}"
+      location: southafricanorth
+  - name: Create virtual network
+    azure_rm_virtualnetwork:
+      resource_group: "{{ resource_group }}"
+      name: "{{ olan_prefix }}Vnet"
+      address_prefixes: [ "10.0.0.0/16", "2404:f800:8000:122::/63"]
+  
+  - name: Create a route table for traffic for clients 48.0.0.0/16 from Trex to Sut
+    azure_rm_routetable:
+      name: "{{ olan_prefix }}RouteTable48"
+      resource_group: "{{ resource_group }}"
+
+  - name: Create a route table for traffic for clients 16.0.0.0/16 from Trex to Sut
+    azure_rm_routetable:
+      name: "{{ olan_prefix }}RouteTable16"
+      resource_group: "{{ resource_group }}"
+
+  - name: Add subnet for ssh into VM
+    azure_rm_subnet:
+      resource_group: "{{ resource_group }}"
+      name: "{{ olan_prefix }}SubnetSSH"
+      address_prefix: "10.0.1.0/24"
+      virtual_network: "{{ olan_prefix }}Vnet"
+
+  - name: Add subnet for client 48.0.0.0/16
+    azure_rm_subnet:
+      resource_group: "{{ resource_group }}"
+      name: "{{ olan_prefix }}Subnet48"
+      address_prefixes: [ "10.0.2.0/24", "2404:f800:8000:122::/64" ]
+      virtual_network: "{{ olan_prefix }}Vnet"
+      route_table: "{{ olan_prefix }}RouteTable48"
+
+  - name: Add subnet for client 16.0.0.0/16
+    azure_rm_subnet:
+      resource_group: "{{ resource_group }}"
+      name: "{{ olan_prefix }}Subnet16"
+      address_prefixes: [ "10.0.3.0/24", "2404:f800:8000:123::/64" ]
+      virtual_network: "{{ olan_prefix }}Vnet"
+      route_table: "{{ olan_prefix }}RouteTable16"
+
+  - name: Create public IP address for TREX VM
+    azure_rm_publicipaddress:
+      resource_group: "{{ resource_group }}"
+      allocation_method: Static
+      name: "{{ olan_prefix }}TrexPublicIP"
+      domain_name: "{{ olan_prefix }}trex"
+    register: output_trex_ip_address
+  - name: Public IP of TREX VM
+    debug:
+      msg: "The public IP is {{ output_trex_ip_address.state.dns_settings.fqdn }}."
+  
+  - name: Domain of DUT VM
+    debug:
+      msg: "The public IP is {{ output_trex_ip_address }}."
+
+  - name: Create public IP address for DUT VM
+    azure_rm_publicipaddress:
+      resource_group: "{{ resource_group }}"
+      allocation_method: Static
+      name: "{{ olan_prefix }}SutPublicIP"
+      domain_name: "{{ olan_prefix }}sut"
+    register: output_sut_ip_address
+  - name: Public IP of DUT VM
+    debug:
+      msg: "The public IP is {{ output_sut_ip_address.state.dns_settings.fqdn }}."
+
+  - name: Domain of DUT VM
+    debug:
+      msg: "The public IP is {{ output_sut_ip_address }}."
+
+  - name: Create Network Security Group that allows SSH
+    azure_rm_securitygroup:
+      resource_group: "{{ resource_group }}"
+      name: "{{ olan_prefix }}SSHNetworkSecurityGroup"
+      rules:
+        - name: SSH
+          protocol: Tcp
+          destination_port_range: 22
+          access: Allow
+          priority: 1001
+          direction: Inbound
+
+  - name: Create virtual network interface card that will be used for SSH on Trex VM
+    azure_rm_networkinterface:
+      resource_group: "{{ resource_group }}"
+      name: "Linux_eth0_NIC_{{ olan_prefix }}_TrexVM"
+      virtual_network: "{{ olan_prefix }}Vnet"
+      subnet: "{{ olan_prefix }}SubnetSSH"
+      public_ip_name: "{{ olan_prefix }}TrexPublicIP"
+      security_group: "{{ olan_prefix }}SSHNetworkSecurityGroup"
+
+  - name: Create virtual network interface card that will be used for SSH on Sut VM
+    azure_rm_networkinterface:
+      resource_group: "{{ resource_group }}"
+      name: "Linux_eth0_NIC_{{ olan_prefix }}_SutVM"
+      virtual_network: "{{ olan_prefix }}Vnet"
+      subnet: "{{ olan_prefix }}SubnetSSH"
+      public_ip_name: "{{ olan_prefix }}SutPublicIP"
+      security_group: "{{ olan_prefix }}SSHNetworkSecurityGroup"
+
+  - name: Create virtual network interface card that will be used for client 48.0.0.0/16 on Trex VM
+    azure_rm_networkinterface:
+      resource_group: "{{ resource_group }}"
+      name: "ANLinux_eth1_NIC_{{ olan_prefix }}_TrexVM"
+      virtual_network: "{{ olan_prefix }}Vnet"
+      subnet: "{{ olan_prefix }}Subnet48"
+      enable_ip_forwarding: yes
+      enable_accelerated_networking: yes
+      ip_configurations:
+        - name: ipconfigv6
+          private_ip_address_version: "IPv6"
+        - name: ipconfigv4
+          private_ip_address_version: "IPv4"
+    register: trex_client48_nic
+
+  - name: Create virtual network interface card that will be used for client 48.0.0.0/16 on Sut VM
+    azure_rm_networkinterface:
+      resource_group: "{{ resource_group }}"
+      name: "ANLinux_eth1_NIC_{{ olan_prefix }}_SutVM"
+      virtual_network: "{{ olan_prefix }}Vnet"
+      subnet: "{{ olan_prefix }}Subnet48"
+      enable_ip_forwarding: yes
+      enable_accelerated_networking: yes
+      ip_configurations:
+        - name: ipconfigv6
+          private_ip_address_version: "IPv6"
+        - name: ipconfigv4
+          private_ip_address_version: "IPv4"
+    register: sut_client48_nic
+
+  - name: Create virtual network interface card that will be used for client 16.0.0.0/16 on Trex VM
+    azure_rm_networkinterface:
+      resource_group: "{{ resource_group }}"
+      name: "ANLinux_eth2_NIC_{{ olan_prefix }}_TrexVM"
+      virtual_network: "{{ olan_prefix }}Vnet"
+      subnet: "{{ olan_prefix }}Subnet16"
+      enable_ip_forwarding: yes
+      enable_accelerated_networking: yes
+      ip_configurations:
+        - name: ipconfigv6
+          private_ip_address_version: "IPv6"
+        - name: ipconfigv4
+          private_ip_address_version: "IPv4"
+    register: trex_client16_nic
+      
+  - name: Private IP of Trex VM eth2
+    debug:
+      msg: "{{ trex_client16_nic }}"
+
+  - name: Create virtual network interface card that will be used for client 16.0.0.0/16 on Sut VM
+    azure_rm_networkinterface:
+      resource_group: "{{ resource_group }}"
+      name: "ANLinux_eth2_NIC_{{ olan_prefix }}_SutVM"
+      virtual_network: "{{ olan_prefix }}Vnet"
+      subnet: "{{ olan_prefix }}Subnet16"
+      enable_ip_forwarding: yes
+      enable_accelerated_networking: yes
+      ip_configurations:
+        - name: ipconfigv6
+          private_ip_address_version: "IPv6"
+        - name: ipconfigv4
+          private_ip_address_version: "IPv4"
+    register: sut_client16_nic
+
+  - name: Create Trex VM
+    azure_rm_virtualmachine:
+      resource_group: "{{ resource_group }}"
+      name: "{{ olan_prefix }}TrexVM"
+      vm_size: Standard_D8d_v4
+      # vm_size: Standard_D4d_v4
+      admin_username: "{{ olan_username }}"
+      ssh_password_enabled: false
+      ssh_public_keys:
+        - path: "/home/{{ olan_username }}/.ssh/authorized_keys"
+          key_data: "{{ ssh_key_data }}"
+      network_interface_names:
+        - "Linux_eth0_NIC_{{ olan_prefix }}_TrexVM"
+        - "ANLinux_eth1_NIC_{{ olan_prefix }}_TrexVM"
+        - "ANLinux_eth2_NIC_{{ olan_prefix }}_TrexVM"
+      image:
+        offer: 0001-com-ubuntu-server-jammy
+        publisher: Canonical
+        sku: '22_04-lts'
+        version: latest
+
+  - name: Create Sut VM
+    azure_rm_virtualmachine:
+      resource_group: "{{ resource_group }}"
+      name: "{{ olan_prefix }}SutVM"
+      vm_size: Standard_D8d_v4
+      # vm_size: Standard_D4d_v4
+      admin_username: "{{ olan_username }}"
+      ssh_password_enabled: false
+      ssh_public_keys:
+        - path: "/home/{{ olan_username }}/.ssh/authorized_keys"
+          key_data: "{{ ssh_key_data }}"
+      network_interface_names:
+        - "Linux_eth0_NIC_{{ olan_prefix }}_SutVM"
+        - "ANLinux_eth1_NIC_{{ olan_prefix }}_SutVM"
+        - "ANLinux_eth2_NIC_{{ olan_prefix }}_SutVM"
+      image:
+        offer: 0001-com-ubuntu-server-jammy
+        publisher: Canonical
+        sku: '22_04-lts'
+        version: latest
+
+  - name: Set var for Private IP of Sut VM eth1 (sut_eth1_ipv4)
+    set_fact:
+      sut_eth1_ipv4: "{{ (sut_client48_nic.state.ip_configurations | selectattr('name', 'equalto', 'ipconfigv4') | first).private_ip_address }}"
+
+  - name: Private IP of Sut VM eth1
+    debug:
+      msg: "{{ sut_eth1_ipv4 }}"
+
+  - name: Set var for Private IP of Sut VM eth2 (sut_eth2_ipv4)
+    set_fact:
+      sut_eth2_ipv4: "{{ (sut_client16_nic.state.ip_configurations | selectattr('name', 'equalto', 'ipconfigv4') | first).private_ip_address }}"
+
+  - name: Private IP of Sut VM eth2
+    debug:
+      msg: "{{ sut_eth2_ipv4 }}"
+
+  # ====
+  - name: Set var for Private IP of Trex VM eth1 (sut_eth1_ipv4)
+    set_fact:
+      trex_eth1_ipv4: "{{ (trex_client48_nic.state.ip_configurations | selectattr('name', 'equalto', 'ipconfigv4') | first).private_ip_address }}"
+
+  - name: Private IP of Trex VM eth1
+    debug:
+      msg: "{{ trex_eth1_ipv4 }}"
+
+  - name: Set var for Private IP of Trex VM eth2 (sut_eth2_ipv4)
+    set_fact:
+      trex_eth2_ipv4: "{{ (trex_client16_nic.state.ip_configurations | selectattr('name', 'equalto', 'ipconfigv4') | first).private_ip_address }}"
+
+  - name: Private IP of Trex VM eth2
+    debug:
+      msg: "{{ trex_eth2_ipv4 }}"
+
+  - name: Create route for clients 48.0.0.0/16 from TREX to SUT
+    azure_rm_route:
+      name: "{{ olan_prefix }}Route48Trex2Sut"
+      resource_group: "{{ resource_group }}"
+      next_hop_type: virtual_appliance
+      address_prefix: "48.0.0.0/16"
+      next_hop_ip_address: "{{ sut_eth1_ipv4 }}"
+      route_table_name: "{{ olan_prefix }}RouteTable48"
+
+  - name: Create route for clients 16.0.0.0/16 from TREX to SUT
+    azure_rm_route:
+      name: "{{ olan_prefix }}Route16Trex2Sut"
+      resource_group: "{{ resource_group }}"
+      next_hop_type: virtual_appliance
+      address_prefix: "16.0.0.0/16"
+      next_hop_ip_address: "{{ sut_eth2_ipv4 }}"
+      route_table_name: "{{ olan_prefix }}RouteTable16"
+
+  - name: Create route for clients 16.0.0.0/16 from SUT to TREX
+    azure_rm_route:
+      name: "{{ olan_prefix }}Route16Sut2Trex"
+      resource_group: "{{ resource_group }}"
+      next_hop_type: virtual_appliance
+      address_prefix: "16.0.0.0/16"
+      next_hop_ip_address: "{{ trex_eth1_ipv4 }}"
+      route_table_name: "{{ olan_prefix }}RouteTable48"
+
+  - name: Create route for clients 48.0.0.0/16 from SUT to TREX
+    azure_rm_route:
+      name: "{{ olan_prefix }}Route48Sut2Trex"
+      resource_group: "{{ resource_group }}"
+      next_hop_type: virtual_appliance
+      address_prefix: "48.0.0.0/16"
+      next_hop_ip_address: "{{ trex_eth2_ipv4 }}"
+      route_table_name: "{{ olan_prefix }}RouteTable16"
+
+  - name: Register dummy host with for Trex's 48.0.0.0/16 nic IP
+    add_host:
+      name: "DUMMY_HOST"
+      trex_client48_nic_ip: "{{ trex_eth1_ipv4 }}"
+
+  - name: Register dummy host with for Trex's 16.0.0.0/16 nic IP
+    add_host:
+      name: "DUMMY_HOST"
+      trex_client16_nic_ip: "{{ trex_eth2_ipv4 }}"
+
+  - name: Register dummy host with for Sut's 48.0.0.0/16 nic IP
+    add_host:
+      name: "DUMMY_HOST"
+      sut_client48_nic_ip: "{{ sut_eth1_ipv4 }}"
+
+  - name: Register dummy host with for Sut's 16.0.0.0/16 nic IP
+    add_host:
+      name: "DUMMY_HOST"
+      sut_client16_nic_ip: "{{ sut_eth2_ipv4 }}"
+
+  - name: Get SUT VM ECDSA key fingerprint
+    shell: az vm run-command invoke -g {{ resource_group }} -n {{ olan_prefix }}SutVM  --command-id RunShellScript --scripts "cat /etc/ssh/ssh_host_ecdsa_key.pub"
+    register: sut_vm_fingerprint_out
+    delegate_to: localhost
+
+  - set_fact:
+      sut_vm_fingerprint_msg: "{{ (sut_vm_fingerprint_out.stdout | from_json).value[0].message }}"
+
+  - set_fact:
+      sut_vm_fingerprint: "{{ ( (sut_vm_fingerprint_msg |  regex_findall(regexp, multiline=True))[4] ) }}"
+    vars:
+      regexp: '[\S]+'
+
+  - debug:
+      msg: "{{ sut_vm_fingerprint }}"
+
+  - name: Another way to call known_hosts
+    known_hosts:
+      name: "{{ output_sut_ip_address.state.dns_settings.fqdn }}"   
+      key: "{{ output_sut_ip_address.state.dns_settings.fqdn }},{{ output_sut_ip_address.state.ip_address }} ecdsa-sha2-nistp256 {{ sut_vm_fingerprint }}" # some key gibberish
+      path: ~/.ssh/known_hosts
+      state: present
+
+  - name: Get TREX VM ECDSA key fingerprint
+    shell: az vm run-command invoke -g {{ resource_group }} -n {{ olan_prefix }}TrexVM  --command-id RunShellScript --scripts "cat /etc/ssh/ssh_host_ecdsa_key.pub"
+    register: trex_vm_fingerprint_out
+    delegate_to: localhost
+
+  - set_fact:
+      trex_vm_fingerprint_msg: "{{ (trex_vm_fingerprint_out.stdout | from_json).value[0].message }}"
+
+  - set_fact:
+      trex_vm_fingerprint: "{{ ( (trex_vm_fingerprint_msg |  regex_findall(regexp, multiline=True))[4] ) }}"
+    vars:
+      regexp: '[\S]+'
+
+  - debug:
+      msg: "{{ trex_vm_fingerprint }}"
+
+  - name: Another way to call known_hosts
+    known_hosts:
+      name: "{{ output_trex_ip_address.state.dns_settings.fqdn }}"   
+      key: "{{ output_trex_ip_address.state.dns_settings.fqdn }},{{ output_trex_ip_address.state.ip_address }} ecdsa-sha2-nistp256 {{ trex_vm_fingerprint }}" # some key gibberish
+      path: ~/.ssh/known_hosts
+      state: present

@@ -1,0 +1,8 @@
+.venv
+*-linuxkit
+notebooks/images/*
+notebooks/gnuplot/*
+notebooks/plotly/*
+.DS_Store
+
+OpenCN-tg-openrc.sh

@@ -1,0 +1,13 @@
+---
+# tasks file for open5gs
+- name: Run pre tasks for Open5gs
+  include: install.yml
+
+- name: Install Open5gs
+  include: configure.yml
+
+- name: Configure Open5gs with UERANSIM VM
+  include: webui.yml
+
+- name: Run Free5GC
+  include: run.yml

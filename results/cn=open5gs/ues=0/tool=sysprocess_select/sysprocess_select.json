@@ -1,0 +1,3 @@
+{'time': '12:54:24', 'pid': 25760, 'comm': 'python3', 'count': 1, 'time (ms)': 70067.461677}
+{'time': '12:54:24', 'pid': 25736, 'comm': 'python3', 'count': 13, 'time (ms)': 65063.297601}
+{'time': '12:54:24', 'pid': 692, 'comm': 'snapd', 'count': 462, 'time (ms)': 202.266069}

@@ -1,0 +1,9 @@
+[04:22:12]
+t:syscalls:sys_exit_clock_nanosleep():char*,u16:$COMM,args->ret
+	COUNT      EVENT
+	1          $COMM = b'cron', args->ret = 0
+	3          $COMM = b'sleep', args->ret = 0
+	4          $COMM = b'nrf', args->ret = 0
+	9          $COMM = b'smf', args->ret = 0
+	70         $COMM = b'multipathd', args->ret = 0
+	70         $COMM = b'ib_src_main', args->ret = 0

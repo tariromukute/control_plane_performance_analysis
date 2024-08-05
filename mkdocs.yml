@@ -1,0 +1,32 @@
+site_name: 5G Control Plane Performance Analysis
+repo_url: https://github.com/tariromukute/control_plane_performance_analysis
+repo_name: tariromukute/control_plane_performance_analysis
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - navigation.sections
+nav:
+  - Home: index.md
+  # - Install: install.md
+  # - Usage: usage.md
+  - Performance Results:
+     - blog/overall.md
+     - blog/syscalls-across-system.md
+     - blog/process-across-system.md
+     - blog/io-multiplexing.md
+     - blog/sleep-operations.md
+     - blog/locks-operations.md
+     - blog/files-operations.md
+     - blog/socket-read-operations.md
+     - blog/socket-write-operations.md
+     - blog/control-operations.md
+plugins:
+  - search
+  - blog
+extra_javascript:
+  - javascripts/plotly-2.24.1.min.js
+markdown_extensions:
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html

@@ -1,0 +1,5 @@
+{'time': '22:10:51', 'pid': 459, 'comm': 'multipathd', 'count': 13, 'time (ms)': 65001.089015}
+{'time': '22:10:51', 'pid': 89140, 'comm': 'systemctl', 'count': 44, 'time (ms)': 400.405785}
+{'time': '22:10:51', 'pid': 717, 'comm': 'mysqld', 'count': 1, 'time (ms)': 1.607563}
+{'time': '22:10:51', 'pid': 89135, 'comm': 'sudo', 'count': 1, 'time (ms)': 0.501649}
+{'time': '22:10:51', 'pid': 547, 'comm': 'systemd-resolve', 'count': 2, 'time (ms)': 0.00696}

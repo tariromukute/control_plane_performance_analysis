@@ -1,0 +1,5 @@
+{'time': '22:02:33', 'pid': 27274, 'comm': 'python3', 'count': 14, 'time (ms)': 0.526042}
+{'time': '22:02:33', 'pid': 27126, 'comm': '[unknown]', 'count': 5, 'time (ms)': 0.065156}
+{'time': '22:02:33', 'pid': 569, 'comm': 'systemd-network', 'count': 3, 'time (ms)': 0.062436}
+{'time': '22:02:33', 'pid': 27199, 'comm': '[unknown]', 'count': 2, 'time (ms)': 0.057536}
+{'time': '22:02:33', 'pid': 683, 'comm': 'dbus-daemon', 'count': 1, 'time (ms)': 0.015699}

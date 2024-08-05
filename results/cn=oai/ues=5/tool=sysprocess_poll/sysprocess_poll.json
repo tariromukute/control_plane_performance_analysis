@@ -1,0 +1,10 @@
+{'time': '14:37:57', 'pid': 583, 'comm': 'accounts-daemon', 'count': 96, 'time (ms)': 68616.373725}
+{'time': '14:37:57', 'pid': 599, 'comm': 'rsyslogd', 'count': 174, 'time (ms)': 67500.721321}
+{'time': '14:37:57', 'pid': 593, 'comm': 'irqbalance', 'count': 6, 'time (ms)': 59995.309486}
+{'time': '14:37:57', 'pid': 459, 'comm': 'multipathd', 'count': 1, 'time (ms)': 30000.094988}
+{'time': '14:37:57', 'pid': 61335, 'comm': 'sshd', 'count': 6, 'time (ms)': 82.214337}
+{'time': '14:37:57', 'pid': 61529, 'comm': 'udr', 'count': 60, 'time (ms)': 54.738324}
+{'time': '14:37:57', 'pid': 61509, 'comm': 'ausf', 'count': 3, 'time (ms)': 0.778641}
+{'time': '14:37:57', 'pid': 61500, 'comm': 'sudo', 'count': 7, 'time (ms)': 0.453533}
+{'time': '14:37:57', 'pid': 61511, 'comm': 'udm', 'count': 3, 'time (ms)': 0.441722}
+{'time': '14:37:57', 'pid': 1, 'comm': 'systemd', 'count': 8, 'time (ms)': 0.024253}

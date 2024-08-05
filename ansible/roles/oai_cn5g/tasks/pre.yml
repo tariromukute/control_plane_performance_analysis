@@ -1,0 +1,84 @@
+- name: Update packages
+  ansible.builtin.command: apt update -y
+  become: yes
+
+- name: Variables that are common across all OS types
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - common.yml
+      paths:
+        - 'vars'
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - default.yml
+      paths:
+        - 'vars'
+
+- name: Install build packages for OAI source code
+  ansible.builtin.package:
+    name: "{{ build_packages }}"
+    state: present
+  become: yes
+
+- name: Install mysql packages for OAI
+  ansible.builtin.package:
+    name: "{{ mysql }}"
+    state: present
+  become: yes
+
+- name: Clone the OAI AMF cn5g repository and checkout to {{ oai_version }}
+  ansible.builtin.git:
+    repo: 'https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-{{ item }}.git'
+    dest: /home/{{ user }}/oai-cn5g-{{ item }}
+    recursive: no
+    force: yes
+    version: "{{ oai_version }}"
+  loop:
+    - amf
+    - smf
+    - udr
+    - udm
+    - ausf
+    - nrf
+    - upf
+
+# TODO: remove this after build bug is fixed by OAI.
+- name: Copy mongo_db.cpp file to avoid build error for UDR v2.0.0
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/mongo_db.cpp"
+    dest: "/home/{{ user }}/oai-cn5g-udr/src/udr_app/mongo_db.cpp"
+
+- name: Install dependencies for each NF
+  shell: ./build_{{ item }} --install-deps --force
+  args:
+    chdir: /home/{{ user }}/oai-cn5g-{{ item }}/build/scripts
+  become: yes
+  loop:
+    - amf
+    - smf
+    - udr
+    - udm
+    - ausf
+    - nrf
+    - upf
+
+- name: Install OAI NF
+  shell: ./build_{{ item }} --clean --Verbose --build-type Release --jobs
+  args:
+    chdir: /home/{{ user }}/oai-cn5g-{{ item }}/build/scripts
+  become: yes
+  loop:
+    - amf
+    - smf
+    - udr
+    - udm
+    - ausf
+    - nrf
+    - upf

@@ -1,0 +1,10 @@
+---
+# tasks file for oai_cn5g
+- name: Run pre tasks for OAI
+  include: pre.yml
+
+- name: Config tasks for OAI
+  include: config.yml
+
+- name: Start OAI
+  include: start.yml

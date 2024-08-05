@@ -1,0 +1,102 @@
+- name: Update packages
+  ansible.builtin.command: apt update -y
+  become: yes
+
+- name: Variables that are common across all OS types
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - common.yml
+      paths:
+        - 'vars'
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - default.yml
+      paths:
+        - 'vars'
+
+- name: Install compile packages for Free5gc
+  ansible.builtin.package:
+    name: "{{ old_webconsole_complie_packages }}"
+    state: absent
+  become: yes
+
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+  become: yes
+
+- name: Create a pkg directory if it does not exist
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/yarn.list
+    state: touch
+  become: yes
+
+- name: Update sources list for yarn installation
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/yarn.list
+    regexp: '^deb https://dl.yarnpkg.com/debian/ stable main'
+    line: 'deb https://dl.yarnpkg.com/debian/ stable main'
+  become: yes
+
+- name: download setup_12.x file to tmp dir
+  get_url:
+    url: https://deb.nodesource.com/setup_12.x
+    dest: /tmp/
+    mode: 0755
+
+- name: execute setup_12.x script
+  shell: ./setup_12.x
+  args:
+    chdir: /tmp/
+  ignore_errors: yes
+  become: yes
+
+- name: Remove the setup_12.x
+  file: 
+    path: /tmp/setup_12.x
+    state: absent
+
+- name: Update packages
+  ansible.builtin.command: apt update -y
+  become: yes
+
+- name: Install compile packages for Free5gc
+  ansible.builtin.package:
+    name: "{{ new_webconsole_complie_packages }}"
+    state: present
+  become: yes
+
+- name: Start service mongodb, if not started
+  ansible.builtin.service:
+    name: mongodb
+    state: started
+  become: yes
+
+- name: Install webconsole
+  community.general.make:
+    chdir: '{{ ansible_user_dir }}/free5gc'
+    target: webconsole
+  ignore_errors: yes
+  environment: 
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: '{{ ansible_user_dir }}/go'
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/webconsole.service"
+    dest: /lib/systemd/system/
+  become: yes
+
+- name: Start service free5gc webconsole, if not started
+  ansible.builtin.service:
+    name: webconsole
+    state: started
+  become: yes

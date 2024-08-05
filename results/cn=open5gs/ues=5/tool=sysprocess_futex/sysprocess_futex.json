@@ -1,0 +1,12 @@
+{'time': '13:29:31', 'pid': 13249, 'comm': 'mongod', 'count': 3242, 'time (ms)': 758893.481085}
+{'time': '13:29:31', 'pid': 32812, 'comm': 'open5gs-smfd', 'count': 895, 'time (ms)': 534271.88273}
+{'time': '13:29:31', 'pid': 32809, 'comm': 'open5gs-pcrfd', 'count': 961, 'time (ms)': 534255.384781}
+{'time': '13:29:31', 'pid': 32811, 'comm': 'open5gs-mmed', 'count': 1030, 'time (ms)': 534254.242216}
+{'time': '13:29:31', 'pid': 32810, 'comm': 'open5gs-hssd', 'count': 991, 'time (ms)': 534251.162345}
+{'time': '13:29:31', 'pid': 692, 'comm': 'snapd', 'count': 851, 'time (ms)': 69195.82957}
+{'time': '13:29:31', 'pid': 459, 'comm': 'multipathd', 'count': 209, 'time (ms)': 69014.811355}
+{'time': '13:29:31', 'pid': 691, 'comm': 'rsyslogd', 'count': 226, 'time (ms)': 68556.866491}
+{'time': '13:29:31', 'pid': 689, 'comm': 'polkitd', 'count': 12, 'time (ms)': 0.070835}
+{'time': '13:29:31', 'pid': 770, 'comm': 'ModemManager', 'count': 6, 'time (ms)': 0.029103}
+{'time': '13:29:31', 'pid': 698, 'comm': 'udisksd', 'count': 6, 'time (ms)': 0.026955}
+{'time': '13:29:31', 'pid': 677, 'comm': 'accounts-daemon', 'count': 9, 'time (ms)': 0.024389}

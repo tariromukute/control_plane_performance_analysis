@@ -1,0 +1,11 @@
+build_packages:
+  - git
+  - build-essential
+  - wget
+  - python3-pip
+  - cmake
+  - libconfig++-dev
+  - libspdlog-dev
+mysql:
+  - mysql-client
+  - mysql-server

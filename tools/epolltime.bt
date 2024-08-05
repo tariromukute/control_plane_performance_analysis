@@ -1,0 +1,39 @@
+#!/usr/bin/env bpftrace
+/*
+ * epolltime.bt	Check if the timeout values need to be adjusted.
+ *		For Linux, uses bpftrace, eBPF.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ *
+ * 09-Jun-2023	Tariro Mukute   Created this.
+ */
+
+
+BEGIN
+{
+	printf("Printing count of timeout vs ready events. Also shows count of errors.  Hit Ctrl-C to end.\n");
+    printf("Output format -> [timeout, events]: count")
+}
+
+t:syscalls:sys_enter_epoll_wait 
+{
+    @epoll_timeout[tid] = args->timeout;
+}
+
+t:syscalls:sys_exit_epoll_wait
+/@epoll_timeout[tid]/
+{
+    $t = @epoll_timeout[tid];
+    if(args->ret < 0) {
+        @err[-args->ret] = count();
+    } else {
+        @timeout[$t, args->ret] = count();
+    }
+    delete(@epoll_timeout[tid]);
+}
+
+END
+{
+    clear(@epoll_timeout);
+}

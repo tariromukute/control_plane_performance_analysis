@@ -1,0 +1,3 @@
+common_compile_packages:
+  - git
+  - curl

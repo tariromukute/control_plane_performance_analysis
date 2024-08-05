@@ -1,0 +1,19 @@
+# The file updates the inventory details for the VNFs on the DUT
+- name: Create directory for hosts
+  ansible.builtin.file:
+    path: "/etc/ansible"
+    state: directory
+
+- name: Create directory for group variables
+  ansible.builtin.file:
+    path: "/etc/ansible/group_vars"
+    state: directory
+
+- name: Add text block from a file
+  blockinfile: path=/etc/ansible/hosts block={{lookup('file', vnf_inventory)}} create=yes state=present
+
+- name: "Copy the group vars to the DUT"
+  ansible.builtin.copy:
+    src: "{{ vnf_group_vars }}"
+    dest: /etc/ansible/group_vars
+    remote_src: no

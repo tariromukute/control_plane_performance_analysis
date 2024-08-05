@@ -1,0 +1,43 @@
+# ---- netsize ----
+- name: Run a script for starting tracing (bpftrace)
+  ansible.builtin.command: timeout {{ duration }} {{ command }} {{ tool }}
+  args:
+    chdir: "{{ dir }}"
+  register: tool_command
+  async: "{{ aduration }}"
+  poll: 0
+  become: yes
+  # ignore_errors: yes
+
+- name: Check on an async task for {{ tool }} (bpftrace)
+  async_status:
+    jid: "{{ tool_command.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 100
+  delay: 5
+  become: yes
+  ignore_errors: yes
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: tool_command
+    verbosity: 2
+
+- name: Get results from tracing (bpftrace)
+  ansible.builtin.shell: cat {{ tool_command.results_file }}
+  register: tool_command_results
+  become: yes
+
+# write to remote
+- name: "Filter the tracing results we are interested in and save results them on remote machine"
+  ansible.builtin.copy:
+    content: "{{( tool_command_results.stdout | from_json).stdout}}"
+    dest: ~/{{ tool }}-{{ inventory_hostname }}
+
+# copy remote copy to local machine
+- name: "Save results from tracing on local machine"
+  ansible.builtin.fetch:
+    src: ~/{{ tool }}-{{ inventory_hostname }}
+    dest: .results/{{ prefix }}{{ tool }}
+    flat: yes

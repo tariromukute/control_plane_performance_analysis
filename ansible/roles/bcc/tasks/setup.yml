@@ -1,0 +1,73 @@
+- name: Variables that are common across all OS types
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - common.yml
+      paths:
+        - 'vars'
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - default.yml
+      paths:
+        - 'vars'
+
+- name: Get bpftrace source code from git and checkout to v0.140
+  ansible.builtin.git:
+    repo: 'https://github.com/tariromukute/bcc.git'
+    dest: /home/{{ user }}/bcc
+    version: json_output
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /home/{{ user }}/bcc/build
+    state: directory
+
+- name: Build bpftrace
+  ansible.builtin.command: cmake ..
+  args:
+    chdir: /home/{{ user }}/bcc/build
+
+- name: make
+  ansible.builtin.command: make
+  args:
+    chdir: /home/{{ user }}/bcc/build
+
+- name: Install bcc
+  community.general.make:
+    chdir: /home/{{ user }}/bcc/build
+    target: install
+  become: yes
+
+- name: Build bpftrace
+  ansible.builtin.command: cmake -DPYTHON_CMD=python3 ..
+  args:
+    chdir: /home/{{ user }}/bcc/build
+
+# - name: make
+#   ansible.builtin.shell: pushd src/python/
+#   args:
+#     chdir: /home/{{ user }}/bcc/build
+#     executable: /bin/bash
+  
+- name: make pushd src/python/
+  ansible.builtin.command: make
+  args:
+    chdir: /home/{{ user }}/bcc/build/src/python
+
+- name: Install bcc pushd src/python/
+  community.general.make:
+    chdir: /home/{{ user }}/bcc/build/src/python
+    target: install
+  become: yes
+
+# - name: popd
+#   ansible.builtin.shell: popd
+#   args:
+#     chdir: /home/{{ user }}/bcc/build/src/python
+#     executable: /bin/bash

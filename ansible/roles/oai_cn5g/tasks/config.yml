@@ -1,0 +1,74 @@
+- name: Make sure pymysql is present
+  become: true # needed if the other tasks are not played as root
+  pip:
+    name: pymysql
+    state: present
+
+- name: Create a new database with name 'oai_db'
+  community.mysql.mysql_db:
+    name: oai_db
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+  become: yes
+
+- name: Create database user for default OAI
+  community.mysql.mysql_user:
+    name: test
+    password: test
+    priv: '*.*:ALL'
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+  become: yes
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/oai_db_load.sql"
+    dest: "{{ ansible_user_dir }}/"
+
+- name: Restore database
+  community.mysql.mysql_db:
+    name: oai_db
+    state: import
+    target: "{{ ansible_user_dir }}/oai_db_load.sql"
+    login_unix_socket: /run/mysqld/mysqld.sock
+  become: yes
+
+
+- name: Copy service file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/oai-cn5g-{{ item }}d.service"
+    dest: "/lib/systemd/system/"
+  become: yes
+  loop:
+    - amf
+    - smf
+    - udr
+    - udm
+    - ausf
+    - nrf
+    - upf
+
+- name: Create /etc/oai for OAI configs
+  file:
+    path: "/etc/oai"
+    state: directory
+  become: yes
+
+- name: Copy OAI config file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/basic_nrf_config.yaml"
+    dest: "/etc/oai/config.yaml"
+  become: yes
+
+- name: Copy network config file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/netconf.sh"
+    dest: "{{ ansible_user_dir }}/netconf.sh"
+    mode: +x
+
+- name: Config the network using script
+  shell: ./netconf.sh
+  args:
+    chdir: "{{ ansible_user_dir }}/"
+  become: yes
+

@@ -1,0 +1,45 @@
+- name: Variables that are common across all OS types
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - common.yml
+      paths:
+        - 'vars'
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - default.yml
+      paths:
+        - 'vars'
+
+- name: Get bpftrace source code from git and checkout to v0.140
+  ansible.builtin.git:
+    repo: 'https://github.com/iovisor/bpftrace'
+    dest: /home/{{ user }}/bpftrace
+    version: v0.14.0
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /home/{{ user }}/bpftrace/build
+    state: directory
+
+- name: Build bpftrace
+  ansible.builtin.command: cmake -DCMAKE_BUILD_TYPE=Release ..
+  args:
+    chdir: /home/{{ user }}/bpftrace/build
+
+- name: make -j8
+  ansible.builtin.command: make -j8
+  args:
+    chdir: /home/{{ user }}/bpftrace/build
+
+- name: Install bpftrace
+  community.general.make:
+    chdir: /home/{{ user }}/bpftrace/build
+    target: install
+  become: yes

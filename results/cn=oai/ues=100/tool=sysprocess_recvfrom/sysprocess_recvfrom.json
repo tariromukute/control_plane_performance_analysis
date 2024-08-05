@@ -1,0 +1,9 @@
+{'time': '00:18:15', 'pid': 117866, 'comm': 'udr', 'count': 26, 'time (ms)': 3.092614}
+{'time': '00:18:15', 'pid': 85902, 'comm': 'systemd-timesyn', 'count': 70, 'time (ms)': 2.915037}
+{'time': '00:18:15', 'pid': 85885, 'comm': 'snapd', 'count': 436, 'time (ms)': 0.879802}
+{'time': '00:18:15', 'pid': 547, 'comm': 'systemd-resolve', 'count': 114, 'time (ms)': 0.510212}
+{'time': '00:18:15', 'pid': 117855, 'comm': 'smf', 'count': 22, 'time (ms)': 0.086991}
+{'time': '00:18:15', 'pid': 1, 'comm': 'systemd', 'count': 20, 'time (ms)': 0.046232}
+{'time': '00:18:15', 'pid': 117828, 'comm': 'sudo', 'count': 10, 'time (ms)': 0.021717}
+{'time': '00:18:15', 'pid': 717, 'comm': 'mysqld', 'count': 3, 'time (ms)': 0.018433}
+{'time': '00:18:15', 'pid': 117667, 'comm': 'sshd', 'count': 2, 'time (ms)': 0.006412}

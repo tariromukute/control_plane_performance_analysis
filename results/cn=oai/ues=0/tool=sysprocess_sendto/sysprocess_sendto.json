@@ -1,0 +1,11 @@
+{'time': '12:46:45', 'pid': 52964, 'comm': 'udr', 'count': 65, 'time (ms)': 2.776936}
+{'time': '12:46:45', 'pid': 52946, 'comm': 'ausf', 'count': 64, 'time (ms)': 1.373538}
+{'time': '12:46:45', 'pid': 52949, 'comm': 'udm', 'count': 64, 'time (ms)': 1.370454}
+{'time': '12:46:45', 'pid': 52963, 'comm': 'smf', 'count': 23, 'time (ms)': 0.631813}
+{'time': '12:46:45', 'pid': 52913, 'comm': 'python3', 'count': 14, 'time (ms)': 0.55163}
+{'time': '12:46:45', 'pid': 52937, 'comm': 'sudo', 'count': 9, 'time (ms)': 0.103869}
+{'time': '12:46:45', 'pid': 1, 'comm': 'systemd', 'count': 10, 'time (ms)': 0.090208}
+{'time': '12:46:45', 'pid': 52768, 'comm': 'sshd', 'count': 2, 'time (ms)': 0.048508}
+{'time': '12:46:45', 'pid': 547, 'comm': 'systemd-resolve', 'count': 2, 'time (ms)': 0.02611}
+{'time': '12:46:45', 'pid': 717, 'comm': 'mysqld', 'count': 1, 'time (ms)': 0.014928}
+{'time': '12:46:45', 'pid': 52944, 'comm': 'nrf', 'count': 1, 'time (ms)': 0.013131}

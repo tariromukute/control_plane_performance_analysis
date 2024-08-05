@@ -1,0 +1,10 @@
+euransim_compile_packages:
+  - make
+  - g++
+  - libsctp-dev
+  - lksctp-tools
+  - iproute2
+  - build-essential
+  - libssl-dev
+  - git
+sudo: sudo

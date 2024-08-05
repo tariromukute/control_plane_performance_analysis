@@ -1,0 +1,13 @@
+[Unit]
+Description=Start the free 5G Core service
+
+[Service]
+Type=simple
+ExecStart=/home/azureuser/free5gc/run.sh
+# Software mode can useful e.g. in cloud
+WorkingDirectory=/home/azureuser/free5gc
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

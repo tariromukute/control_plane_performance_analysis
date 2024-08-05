@@ -1,0 +1,14 @@
+{'time': '07:28:56', 'pid': 13372, 'comm': 'mongod', 'count': 4676, 'time (ms)': 369719.351224}
+{'time': '07:28:56', 'pid': 18598, 'comm': 'amf', 'count': 729, 'time (ms)': 59628.732179}
+{'time': '07:28:56', 'pid': 43813, 'comm': 'systemd-journal', 'count': 18, 'time (ms)': 0.242459}
+{'time': '07:28:56', 'pid': 35679, 'comm': 'rsyslogd', 'count': 18, 'time (ms)': 0.231724}
+{'time': '07:28:56', 'pid': 1, 'comm': 'systemd', 'count': 18, 'time (ms)': 0.137189}
+{'time': '07:28:56', 'pid': 683, 'comm': 'dbus-daemon', 'count': 36, 'time (ms)': 0.121102}
+{'time': '07:28:56', 'pid': 695, 'comm': 'systemd-logind', 'count': 24, 'time (ms)': 0.084773}
+{'time': '07:28:56', 'pid': 78008, 'comm': '[unknown]', 'count': 16, 'time (ms)': 0.079026}
+{'time': '07:28:56', 'pid': 43784, 'comm': 'systemd-network', 'count': 6, 'time (ms)': 0.043079}
+{'time': '07:28:56', 'pid': 691, 'comm': 'polkitd', 'count': 4, 'time (ms)': 0.022839}
+{'time': '07:28:56', 'pid': 700, 'comm': 'udisksd', 'count': 4, 'time (ms)': 0.017319}
+{'time': '07:28:56', 'pid': 54380, 'comm': 'systemd-udevd', 'count': 3, 'time (ms)': 0.016719}
+{'time': '07:28:56', 'pid': 36853, 'comm': 'accounts-daemon', 'count': 4, 'time (ms)': 0.015452}
+{'time': '07:28:56', 'pid': 772, 'comm': 'ModemManager', 'count': 4, 'time (ms)': 0.015124}

@@ -1,0 +1,75 @@
+
+- name: Start the gNodeB
+  ansible.builtin.command: 
+    cmd: timeout {{ aduration }} build/nr-gnb -c config/oai-cn5g-gnb.yaml >  oai-cn5g-gnb.{{ tool }}-{{ ues|int * 400 }}.txt
+    chdir: /home/{{ user }}/UERANSIM
+  when:
+    - inventory_hostname in groups["az_trex"]
+  register: trex_command
+  async: "{{ aduration|int + 10 }}"
+  poll: 0
+  # become: yes
+  ignore_errors: yes
+
+- name: Sleep for 5 seconds (gNB takes some time to start up) and continue with play
+  wait_for:
+    timeout: 5
+  delegate_to: localhost
+
+- name: Start the eBPF scripts to collect results
+  ansible.builtin.shell: ./main.sh {{ tool }} {{ duration }} 1 {{ duration }} {{ ues|int * 400 }}
+  args:
+    chdir: /home/{{ user }}/tools
+    executable: /bin/bash
+  async: "{{ duration }}"
+  poll: 0
+  become: yes
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- name: Sleep for 2 seconds (to load the eBPF programs) and continue with play
+  wait_for:
+    timeout: 2
+  delegate_to: localhost
+
+- name: Start PDU session establishment (Will run a minimum of two processes. Each process registering 500 UEs. Number of UEs = 400 + ues*400)
+  ansible.builtin.shell: seq 208950000000031 500 {{ ues|int * 500 + 208950000000031 }} | parallel -I{} timeout 10 build/nr-ue -c config/oai-cn5g-ue.yaml -i imsi-{} -n 100 > oai-cn5g-ue.{{ tool }}-{{ ues|int * 400 }}.txt
+  args:
+    chdir: /home/{{ user }}/UERANSIM
+  when:
+    - inventory_hostname in groups["az_trex"]
+  register: ue_command
+  async: "{{ duration }}"
+  poll: 0
+  become: yes
+  ignore_errors: yes
+
+- name: Check on an async task for {{ tool }} (bpftrace)
+  async_status:
+    jid: "{{ trex_command.ansible_job_id }}"
+  when:
+    - inventory_hostname in groups["az_trex"]
+  register: job_result
+  until: job_result.finished
+  retries: 100
+  delay: 10
+  # become: yes
+  ignore_errors: yes
+
+- name: Fetch stuff from the remote and save to local
+  synchronize:  src=/home/{{ user }}/tools/results/ dest=.results/kpps={{ ues|int * 400  }} mode=pull
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- name: Delete content & directory
+  file:
+    state: absent
+    path: /home/{{ user }}/tools/results/
+  become: yes
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- name: Fetch oai-cn5g-ue stuff from the remote and save to local
+  synchronize:  src=/home/{{ user }}/UERANSIM/oai-cn5g-ue.{{ tool }}-{{ ues|int * 400 }}.txt dest=.results/kpps={{ ues|int * 400  }}/ mode=pull
+  when:
+    - inventory_hostname in groups["az_trex"]

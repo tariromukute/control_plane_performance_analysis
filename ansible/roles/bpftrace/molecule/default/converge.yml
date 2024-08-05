@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include bpftrace"
+      include_role:
+        name: "bpftrace"
+      vars:
+        user: ubuntu

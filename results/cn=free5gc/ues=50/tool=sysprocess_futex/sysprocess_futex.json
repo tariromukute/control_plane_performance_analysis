@@ -1,0 +1,16 @@
+{'time': '06:46:41', 'pid': 13372, 'comm': 'mongod', 'count': 3948, 'time (ms)': 759831.632409}
+{'time': '06:46:41', 'pid': 18620, 'comm': 'udr', 'count': 10493, 'time (ms)': 190217.524001}
+{'time': '06:46:41', 'pid': 18587, 'comm': 'nrf', 'count': 5575, 'time (ms)': 188760.844918}
+{'time': '06:46:41', 'pid': 18629, 'comm': 'pcf', 'count': 3305, 'time (ms)': 187597.527876}
+{'time': '06:46:41', 'pid': 18598, 'comm': 'amf', 'count': 13127, 'time (ms)': 165763.412487}
+{'time': '06:46:41', 'pid': 460, 'comm': 'multipathd', 'count': 209, 'time (ms)': 69013.908725}
+{'time': '06:46:41', 'pid': 18654, 'comm': 'ausf', 'count': 3947, 'time (ms)': 66232.311205}
+{'time': '06:46:41', 'pid': 35679, 'comm': 'rsyslogd', 'count': 50, 'time (ms)': 65048.519806}
+{'time': '06:46:41', 'pid': 18639, 'comm': 'udm', 'count': 11023, 'time (ms)': 11780.856231}
+{'time': '06:46:41', 'pid': 772, 'comm': 'ModemManager', 'count': 12, 'time (ms)': 0.092707}
+{'time': '06:46:41', 'pid': 691, 'comm': 'polkitd', 'count': 12, 'time (ms)': 0.059456}
+{'time': '06:46:41', 'pid': 60466, 'comm': 'snapd', 'count': 1, 'time (ms)': 0.016873}
+{'time': '06:46:41', 'pid': 18610, 'comm': 'smf', 'count': 1, 'time (ms)': 0.015767}
+{'time': '06:46:41', 'pid': 18565, 'comm': 'upf', 'count': 1, 'time (ms)': 0.013666}
+{'time': '06:46:41', 'pid': 18646, 'comm': 'nssf', 'count': 1, 'time (ms)': 0.013304}
+{'time': '06:46:41', 'pid': 700, 'comm': 'udisksd', 'count': 3, 'time (ms)': 0.008976}

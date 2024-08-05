@@ -1,0 +1,40 @@
+#!/usr/bin/env bpftrace
+/*
+ * epolltime.bt	Check if the timeout values need to be adjusted.
+ *		For Linux, uses bpftrace, eBPF.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ *
+ * 09-Jun-2023	Tariro Mukute   Created this.
+ */
+
+
+BEGIN
+{
+	printf("Printing count of size of buffer vs the bytes written. Also shows count of errors.  Hit Ctrl-C to end.\n");
+    printf("Output format -> [process, buffer_size, bytes_written]: count")
+}
+
+t:syscalls:sys_enter_write 
+{
+    @bytes_count[tid] = args->count;
+}
+
+t:syscalls:sys_exit_write
+/@bytes_count[tid]/
+{
+    $b = @bytes_count[tid];
+    if(args->ret < 0) {
+        @err[-args->ret] = count();
+    } else {
+        @timeout[comm, $b, args->ret] = count();
+    }
+    delete(@bytes_count[tid]);
+}
+
+END
+{
+    clear(@bytes_count);
+}
+

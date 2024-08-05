@@ -1,0 +1,15 @@
+{'time': '22:09:16', 'pid': 18598, 'comm': 'amf', 'count': 263, 'time (ms)': 23.956661}
+{'time': '22:09:16', 'pid': 18620, 'comm': 'udr', 'count': 384, 'time (ms)': 7.381123}
+{'time': '22:09:16', 'pid': 18587, 'comm': 'nrf', 'count': 218, 'time (ms)': 6.027984}
+{'time': '22:09:16', 'pid': 18639, 'comm': 'udm', 'count': 376, 'time (ms)': 5.774547}
+{'time': '22:09:16', 'pid': 18654, 'comm': 'ausf', 'count': 118, 'time (ms)': 2.709617}
+{'time': '22:09:16', 'pid': 18629, 'comm': 'pcf', 'count': 99, 'time (ms)': 2.253088}
+{'time': '22:09:16', 'pid': 693, 'comm': 'rsyslogd', 'count': 18, 'time (ms)': 1.521546}
+{'time': '22:09:16', 'pid': 679, 'comm': 'accounts-daemon', 'count': 96, 'time (ms)': 0.365349}
+{'time': '22:09:16', 'pid': 691, 'comm': 'polkitd', 'count': 16, 'time (ms)': 0.056997}
+{'time': '22:09:16', 'pid': 28362, 'comm': '[unknown]', 'count': 2, 'time (ms)': 0.0345}
+{'time': '22:09:16', 'pid': 28363, 'comm': 'systemd-udevd', 'count': 2, 'time (ms)': 0.030485}
+{'time': '22:09:16', 'pid': 772, 'comm': 'ModemManager', 'count': 10, 'time (ms)': 0.024625}
+{'time': '22:09:16', 'pid': 700, 'comm': 'udisksd', 'count': 10, 'time (ms)': 0.024571}
+{'time': '22:09:16', 'pid': 688, 'comm': 'irqbalance', 'count': 3, 'time (ms)': 0.019096}
+{'time': '22:09:16', 'pid': 695, 'comm': 'systemd-logind', 'count': 2, 'time (ms)': 0.016718}

@@ -1,0 +1,13 @@
+[Unit]
+Description=Start the free 5G Core Webconsole service
+
+[Service]
+Type=simple
+ExecStart=/home/azureuser/free5gc/webconsole/bin/webconsole
+# Software mode can useful e.g. in cloud
+WorkingDirectory=/home/azureuser/free5gc
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

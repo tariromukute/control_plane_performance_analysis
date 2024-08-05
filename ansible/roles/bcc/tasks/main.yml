@@ -1,0 +1,7 @@
+---
+# tasks file for olan_azure_trex
+- name: Run pre tasks for bcc
+  include: pre.yml
+
+- name: Install and setup bcc
+  include: setup.yml

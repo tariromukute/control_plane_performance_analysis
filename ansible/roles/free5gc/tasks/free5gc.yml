@@ -1,0 +1,68 @@
+- name: sysctl -w net.ipv4.ip_forward=1
+  ansible.builtin.command: sysctl -w net.ipv4.ip_forward=1
+  become: yes
+
+- name: MASQUERADE {{ ansible_default_ipv4.interface }}
+  ansible.builtin.iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: '{{ ansible_default_ipv4.interface }}'
+    jump: MASQUERADE
+  become: yes
+
+# Note: could not find how to call --set-mss 1400 with the ansible iptables package
+# - name: Match on IP ranges
+#   ansible.builtin.iptables:
+#     chain: FORWARD
+#     protocol: tcp
+#     match: tcp
+#     jump: TCPMSS
+#     syn: match
+#     tcp_flags:
+#       flags: ALL
+#       flags_set:
+#         - RST
+#         - SYN
+
+- name: Run iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
+  ansible.builtin.command: iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
+  become: yes
+
+- name: Run systemctl stop ufw
+  ansible.builtin.command: systemctl stop ufw
+  become: yes
+
+- name: Clone the free5GC repository and checkout to v3.2.1
+  ansible.builtin.git:
+    repo: 'https://github.com/free5gc/free5gc'
+    dest: '{{ ansible_user_dir }}/free5gc'
+    force: true
+    version: v3.2.1
+
+- name: Run make on free5GC
+  ansible.builtin.command: make
+  args:
+    chdir: '{{ ansible_user_dir }}/free5gc'
+  environment: 
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: '{{ ansible_user_dir }}/go'
+
+- name: Retrieve the 5G GTP-U kernel module and checkout to v0.6.8
+  ansible.builtin.git:
+    repo: 'https://github.com/free5gc/gtp5g'
+    dest: '{{ ansible_user_dir }}/free5gc/gtp5g'
+    version: v0.6.8
+
+- name: Run make on gtp5g
+  ansible.builtin.command: make
+  args:
+    chdir: '{{ ansible_user_dir }}/free5gc/gtp5g'
+  environment: 
+    PATH: /sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/go/bin
+    GOPATH: '{{ ansible_user_dir }}/go'
+
+- name: Install gtp5g
+  community.general.make:
+    chdir: '{{ ansible_user_dir }}/free5gc/gtp5g'
+    target: install
+  become: yes

@@ -1,0 +1,3 @@
+[05:11:50]
+t:syscalls:sys_enter_open():char*,char*,int:$COMM,args->filename,args->flags&00004000
+	COUNT      EVENT

@@ -1,0 +1,16 @@
+---
+# tasks file for free5gc
+- name: Run pre tasks for Free5GC
+  include: pre.yml
+
+- name: Install Free5GC
+  include: free5gc.yml
+
+- name: Configure Free5GC with UERANSIM VM
+  include: configure.yml
+
+- name: Run Free5GC
+  include: run.yml
+
+- name: Install Free5GC
+  include: webconsole.yml

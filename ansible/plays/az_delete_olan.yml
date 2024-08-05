@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+
+  vars:
+    resource_group: opengilan
+
+  tasks:
+    - name: Deleting resource group - "{{ resource_group }}"
+      azure_rm_resourcegroup:
+        name: "{{ resource_group }}"
+        state: absent
+        force_delete_nonempty: yes
+      register: rg
+    - debug:
+        var: rg

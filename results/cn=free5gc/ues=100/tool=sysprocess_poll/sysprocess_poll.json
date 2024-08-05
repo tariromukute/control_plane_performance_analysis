@@ -1,0 +1,8 @@
+{'time': '07:32:17', 'pid': 36853, 'comm': 'accounts-daemon', 'count': 85, 'time (ms)': 68282.556874}
+{'time': '07:32:17', 'pid': 35679, 'comm': 'rsyslogd', 'count': 17, 'time (ms)': 65058.034054}
+{'time': '07:32:17', 'pid': 688, 'comm': 'irqbalance', 'count': 6, 'time (ms)': 60002.006761}
+{'time': '07:32:17', 'pid': 460, 'comm': 'multipathd', 'count': 2, 'time (ms)': 60000.385286}
+{'time': '07:32:17', 'pid': 691, 'comm': 'polkitd', 'count': 22, 'time (ms)': 9.649547}
+{'time': '07:32:17', 'pid': 700, 'comm': 'udisksd', 'count': 10, 'time (ms)': 1.483863}
+{'time': '07:32:17', 'pid': 772, 'comm': 'ModemManager', 'count': 10, 'time (ms)': 1.123416}
+{'time': '07:32:17', 'pid': 78557, 'comm': '[unknown]', 'count': 2, 'time (ms)': 0.008998}

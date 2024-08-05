@@ -1,0 +1,107 @@
+- name: Create logs directory
+  file:
+    state: directory
+    path: /tmp/core-tg
+  when:
+    - inventory_hostname in groups["az_trex"]
+
+- name: Create folder for results on remote servers
+  file:
+    path: "/tmp/results/tool={{ tool }}/"
+    state: directory
+  become: yes
+
+- debug:
+    msg: Command is {{ tool_cmd }}
+
+- name: Start the eBPF scripts to collect results
+  ansible.builtin.shell: python3 {{ tool_cmd }} > /tmp/results/tool={{ tool }}/{{ tool }}.json
+  args:
+    chdir: '/home/{{ user }}/bcc/tools'
+    executable: /bin/bash
+  async: "{{ aduration }}"
+  poll: 0
+  become: yes
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- name: Sleep for 2 seconds (to load the eBPF programs) and continue with play
+  wait_for:
+    timeout: 2
+  delegate_to: localhost
+
+- name: Stop 5g core (Ensure previous tested is not running)
+  ansible.builtin.shell: systemctl restart oai-nrfd oai-udrd oai-udmd oai-ausfd oai-amfd oai-smfd
+  register: output
+  become: yes
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- name: Sleep for 2 seconds (to restart OAI core network) and continue with play
+  wait_for:
+    timeout: 2
+  delegate_to: localhost
+
+- name: Start 5G core traffic generator
+  ansible.builtin.command:
+    cmd: ./.venv/bin/python3 run.py -u config/oai-cn5g-ue.yaml -g config/oai-cn5g-gnb.yaml -vv
+    chdir: /home/{{ user }}/core-tg
+  when:
+    - inventory_hostname in groups["az_trex"]
+  register: trex_command
+  async: "{{ aduration }}"
+  poll: 0
+  # become: yes
+  ignore_errors: yes
+
+- name: Check on an async task for {{ tool }} (bpftrace)
+  async_status:
+    jid: "{{ trex_command.ansible_job_id }}"
+  when:
+    - inventory_hostname in groups["az_trex"]
+  register: job_result
+  until: job_result.finished
+  retries: 100
+  delay: 10
+  # become: yes
+  ignore_errors: yes
+
+- name: Create folder for results on host machine
+  local_action:
+    module: file
+    path: ".results/ues={{ ues }}/tool={{ tool }}"
+    state: directory
+
+- name: Fetch stuff from the remote and save to local
+  synchronize:  src='/tmp/results/' dest=.results/ues={{ ues }} mode=pull
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- file: path=/tmp/results state=absent
+  become: yes
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- name: Get results from tracing (bpftrace)
+  ansible.builtin.shell: journalctl -n 200
+  register: tool_command_results
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+
+- local_action: copy content="{{ tool_command_results.stdout }}" dest=.results/ues={{ ues }}/tool={{ tool }}/docker.log
+  when:
+    - inventory_hostname in groups["az_sut"]
+
+- name: Fetch 5G Core traffic generator logs
+  synchronize:  src=/tmp/core-tg/ dest=.results/ues={{ ues }}/tool={{ tool }} mode=pull
+  when:
+    - inventory_hostname in groups["az_trex"]
+
+
+- name: Delete content & directory
+  file:
+    state: absent
+    path: /tmp/core-tg
+  when:
+    - inventory_hostname in groups["az_trex"]

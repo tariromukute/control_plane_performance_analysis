@@ -1,0 +1,11 @@
+{'time': '09:13:07', 'pid': 13372, 'comm': 'mongod', 'count': 6942, 'time (ms)': 155.333487}
+{'time': '09:13:07', 'pid': 18598, 'comm': 'amf', 'count': 1796, 'time (ms)': 65.263237}
+{'time': '09:13:07', 'pid': 43813, 'comm': 'systemd-journal', 'count': 18, 'time (ms)': 0.48004}
+{'time': '09:13:07', 'pid': 683, 'comm': 'dbus-daemon', 'count': 26, 'time (ms)': 0.276827}
+{'time': '09:13:07', 'pid': 695, 'comm': 'systemd-logind', 'count': 9, 'time (ms)': 0.134955}
+{'time': '09:13:07', 'pid': 43904, 'comm': 'systemd-timesyn', 'count': 1, 'time (ms)': 0.047093}
+{'time': '09:13:07', 'pid': 1, 'comm': 'systemd', 'count': 8, 'time (ms)': 0.045941}
+{'time': '09:13:07', 'pid': 90345, 'comm': '[unknown]', 'count': 3, 'time (ms)': 0.0407}
+{'time': '09:13:07', 'pid': 691, 'comm': 'polkitd', 'count': 2, 'time (ms)': 0.022129}
+{'time': '09:13:07', 'pid': 43784, 'comm': 'systemd-network', 'count': 1, 'time (ms)': 0.014789}
+{'time': '09:13:07', 'pid': 54380, 'comm': 'systemd-udevd', 'count': 1, 'time (ms)': 0.013249}

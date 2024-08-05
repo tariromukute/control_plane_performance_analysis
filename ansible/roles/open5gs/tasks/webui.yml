@@ -1,0 +1,64 @@
+- name: Update packages
+  ansible.builtin.command: apt update -y
+  become: yes
+
+- name: Variables that are common across all OS types
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - common.yml
+      paths:
+        - 'vars'
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ lookup('first_found', dependencies) }}"
+  vars:
+    dependencies:
+      files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - default.yml
+      paths:
+        - 'vars'
+
+- name: download setup_14.x file to tmp dir
+  get_url:
+    url: https://deb.nodesource.com/setup_14.x
+    dest: /tmp/
+    mode: 0755
+
+- name: execute setup_14.x script
+  shell: ./setup_14.x
+  args:
+    chdir: /tmp/
+  ignore_errors: yes
+  become: yes
+
+- name: Remove the setup_14.x
+  file: 
+    path: /tmp/setup_14.x
+    state: absent
+
+- name: Install compile packages for Free5gc
+  ansible.builtin.package:
+    name: "{{ webui_complie_packages }}"
+    state: present
+  become: yes
+
+- name: download webui install script file to tmp dir
+  get_url:
+    url: https://open5gs.org/open5gs/assets/webui/install
+    dest: /tmp/
+    mode: 0755
+
+- name: execute webui install script
+  shell: ./install
+  args:
+    chdir: /tmp/
+  ignore_errors: yes
+  become: yes
+
+- name: Remove twebui install script
+  file: 
+    path: /tmp/install
+    state: absent

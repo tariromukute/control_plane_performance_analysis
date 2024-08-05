@@ -1,0 +1,13 @@
+- name: Start service OAI, if not started
+  ansible.builtin.service:
+    name: "oai-cn5g-{{ item }}d"
+    state: started
+  become: yes
+  loop:
+    - amf
+    - smf
+    - udr
+    - udm
+    - ausf
+    - nrf
+    - upf

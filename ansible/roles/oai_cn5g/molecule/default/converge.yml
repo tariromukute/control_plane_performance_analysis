@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include oai_cn5g"
+      include_role:
+        name: "oai_cn5g"
